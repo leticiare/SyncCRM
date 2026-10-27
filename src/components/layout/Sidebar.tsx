@@ -1,35 +1,23 @@
-import React from 'react';
-import { useCrm } from '../../context/CrmContext';
-import { 
-  Kanban, 
-  Rocket, 
-  BarChart3, 
-  Terminal, 
-  Database, 
-  ShieldCheck, 
-  Layers, 
-  ChevronRight,
-  TrendingUp,
-  Cpu
-} from 'lucide-react';
-import { formatCurrencyBRL } from '../../utils/formatters';
+import React from "react";
+import { useCrm } from "../../context/CrmContext";
+import { Kanban, Rocket, BarChart3, TrendingUp, Cpu } from "lucide-react";
+import { formatCurrencyBRL } from "../../utils/formatters";
 
 export const Sidebar: React.FC = () => {
-  const { 
-    activeTab, 
-    setActiveTab, 
-    leads, 
-    projetos, 
-    alertasSLA 
-  } = useCrm();
+  const { activeTab, setActiveTab, leads, projetos, alertasSLA } = useCrm();
 
-  const activeLeadsCount = leads.filter(l => l.status_etapa !== 'Fechado (Ganho)' && l.status_etapa !== 'Perdido').length;
+  const activeLeadsCount = leads.filter(
+    (l) => l.status_etapa !== "Fechado (Ganho)" && l.status_etapa !== "Perdido",
+  ).length;
   const pipelineTotal = leads
-    .filter(l => l.status_etapa !== 'Fechado (Ganho)' && l.status_etapa !== 'Perdido')
+    .filter(
+      (l) =>
+        l.status_etapa !== "Fechado (Ganho)" && l.status_etapa !== "Perdido",
+    )
     .reduce((acc, l) => acc + l.valor_estimado, 0);
 
   interface NavItem {
-    id: 'pipeline' | 'projetos' | 'analytics';
+    id: "pipeline" | "projetos" | "analytics";
     label: string;
     icon: React.ReactNode;
     badge?: number;
@@ -38,24 +26,24 @@ export const Sidebar: React.FC = () => {
 
   const navItems: NavItem[] = [
     {
-      id: 'pipeline',
-      label: 'Pipeline Comercial',
+      id: "pipeline",
+      label: "Pipeline Comercial",
       icon: <Kanban className="w-4 h-4" />,
       badge: activeLeadsCount,
-      badgeColor: 'bg-indigo-500/20 text-indigo-300'
+      badgeColor: "bg-indigo-500/20 text-indigo-300",
     },
     {
-      id: 'projetos',
-      label: 'Projetos / Onboarding',
+      id: "projetos",
+      label: "Projetos / Onboarding",
       icon: <Rocket className="w-4 h-4" />,
       badge: projetos.length,
-      badgeColor: 'bg-emerald-500/20 text-emerald-300'
+      badgeColor: "bg-emerald-500/20 text-emerald-300",
     },
     {
-      id: 'analytics',
-      label: 'Métricas & Inteligência',
-      icon: <BarChart3 className="w-4 h-4" />
-    }
+      id: "analytics",
+      label: "Métricas & Inteligência",
+      icon: <BarChart3 className="w-4 h-4" />,
+    },
   ];
 
   return (
@@ -66,8 +54,12 @@ export const Sidebar: React.FC = () => {
           <Cpu className="w-4 h-4" />
         </div>
         <div className="min-w-0">
-          <span className="text-xs font-bold tracking-tight text-slate-100 block">NEXUS CRM</span>
-          <span className="text-[10px] text-slate-400 font-mono block -mt-0.5">Tech & Data Advisory</span>
+          <span className="text-xs font-bold tracking-tight text-slate-100 block">
+            Sync CRM
+          </span>
+          <span className="text-[10px] text-slate-400 font-mono block -mt-0.5">
+            Tech & Data Advisory
+          </span>
         </div>
       </div>
 
@@ -85,19 +77,23 @@ export const Sidebar: React.FC = () => {
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                 isActive
-                  ? 'bg-slate-900 text-indigo-300 border border-slate-800 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                  ? "bg-slate-900 text-indigo-300 border border-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span className={isActive ? 'text-indigo-400' : 'text-slate-500'}>
+                <span
+                  className={isActive ? "text-indigo-400" : "text-slate-500"}
+                >
                   {item.icon}
                 </span>
                 <span>{item.label}</span>
               </div>
 
               {item.badge !== undefined && (
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-semibold ${item.badgeColor}`}>
+                <span
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-semibold ${item.badgeColor}`}
+                >
                   {item.badge}
                 </span>
               )}
@@ -141,8 +137,12 @@ export const Sidebar: React.FC = () => {
           </div>
           <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/80">
             <span>SLA Health</span>
-            <span className={`font-semibold ${alertasSLA.length === 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
-              {alertasSLA.length === 0 ? '100% OK' : `${alertasSLA.length} alertas`}
+            <span
+              className={`font-semibold ${alertasSLA.length === 0 ? "text-emerald-400" : "text-amber-400"}`}
+            >
+              {alertasSLA.length === 0
+                ? "100% OK"
+                : `${alertasSLA.length} alertas`}
             </span>
           </div>
         </div>
