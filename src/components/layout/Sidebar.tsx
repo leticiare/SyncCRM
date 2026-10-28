@@ -30,14 +30,14 @@ export const Sidebar: React.FC = () => {
       label: "Pipeline Comercial",
       icon: <Kanban className="w-4 h-4" />,
       badge: activeLeadsCount,
-      badgeColor: "bg-indigo-500/20 text-indigo-300",
+      badgeColor: "bg-[#4221FF]/20 text-[#A3BCFF]",
     },
     {
       id: "projetos",
       label: "Projetos / Onboarding",
       icon: <Rocket className="w-4 h-4" />,
       badge: projetos.length,
-      badgeColor: "bg-emerald-500/20 text-emerald-300",
+      badgeColor: "bg-[#87A7FF]/15 text-[#C1D0FF]",
     },
     {
       id: "analytics",
@@ -47,10 +47,10 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-60 bg-slate-950 border-r border-slate-850 flex flex-col h-screen shrink-0 select-none">
+    <aside className="w-60 bg-[#071321] border-r border-[#18314b] flex flex-col h-screen shrink-0 select-none">
       {/* Brand Header */}
       <div className="h-14 px-4 flex items-center gap-2.5 border-b border-slate-850">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-indigo-600/25">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#4221FF] to-[#87A7FF] flex items-center justify-center text-white">
           <Cpu className="w-4 h-4" />
         </div>
         <div className="min-w-0">
@@ -58,7 +58,7 @@ export const Sidebar: React.FC = () => {
             Sync CRM
           </span>
           <span className="text-[10px] text-slate-400 font-mono block -mt-0.5">
-            Tech & Data Advisory
+            CRM
           </span>
         </div>
       </div>
@@ -77,13 +77,13 @@ export const Sidebar: React.FC = () => {
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                 isActive
-                  ? "bg-slate-900 text-indigo-300 border border-slate-800 shadow-sm"
+                  ? "bg-[#0b1b2d] text-[#A3BCFF] border border-[#294867]"
                   : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
               }`}
             >
               <div className="flex items-center gap-2.5">
                 <span
-                  className={isActive ? "text-indigo-400" : "text-slate-500"}
+                  className={isActive ? "text-[#87A7FF]" : "text-slate-500"}
                 >
                   {item.icon}
                 </span>
@@ -100,34 +100,11 @@ export const Sidebar: React.FC = () => {
             </button>
           );
         })}
-
-        {/* Informative Sub-section */}
-        <div className="pt-6 px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-          Especialidades Técnicas
-        </div>
-        <div className="space-y-0.5 text-[11px] text-slate-400 px-3">
-          <div className="flex items-center gap-2 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-            <span>ETL & n8n / Supabase</span>
-          </div>
-          <div className="flex items-center gap-2 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-            <span>Agentes de IA & LLMs</span>
-          </div>
-          <div className="flex items-center gap-2 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span>BI & Lakehouses</span>
-          </div>
-          <div className="flex items-center gap-2 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>Cloud & DevOps TI</span>
-          </div>
-        </div>
       </nav>
 
       {/* Bottom KPI Widget */}
-      <div className="p-3 border-t border-slate-850 bg-slate-950/70">
-        <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+      <div className="p-3 border-t border-[#18314b] bg-[#071321]">
+        <div className="p-3 rounded-lg bg-[#0b1b2d] border border-[#18314b] space-y-1.5">
           <div className="flex items-center justify-between text-[11px] text-slate-400">
             <span>Pipeline Aberto</span>
             <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />

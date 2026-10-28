@@ -4,7 +4,6 @@ import {
   Search, 
   Bell, 
   Plus, 
-  RotateCcw, 
   AlertTriangle, 
   Clock, 
   Rocket, 
@@ -23,9 +22,7 @@ export const Header: React.FC = () => {
     setIsNewLeadModalOpen, 
     setSelectedLead,
     setActiveTab,
-    leads,
-    projetos,
-    resetDataToDefaults
+    leads
   } = useCrm();
 
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -56,7 +53,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="h-14 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
+    <header className="h-14 border-b border-[#18314b] bg-[#071321] px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
       {/* Global Search Bar */}
       <div className="flex-1 max-w-md">
         <div className="relative group">
@@ -66,7 +63,7 @@ export const Header: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar empresa, contato, CNPJ ou stack técnica..."
-            className="w-full bg-slate-900/90 border border-slate-800 hover:border-slate-700 focus:border-indigo-500/80 rounded-lg pl-9 pr-14 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-all shadow-inner"
+            className="w-full bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] focus:border-[#87A7FF] rounded-lg pl-9 pr-14 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
           />
           <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-0.5 text-[10px] text-slate-500 font-mono bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60">
             <span>⌘</span>
@@ -77,16 +74,6 @@ export const Header: React.FC = () => {
 
       {/* Right Actions */}
       <div className="flex items-center gap-3">
-        {/* Reset Demo Data Button */}
-        <button
-          onClick={resetDataToDefaults}
-          title="Restaurar dados de demonstração originais"
-          className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-slate-800 transition-colors"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          Reset Demo
-        </button>
-
         {/* Central de Alertas e Notificações (SLA) */}
         <div className="relative" ref={notificationRef}>
           <button
@@ -165,16 +152,12 @@ export const Header: React.FC = () => {
         {/* Primary Action Button "+ Novo Lead" */}
         <button
           onClick={() => setIsNewLeadModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/20 active:scale-95"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#4221FF] to-[#87A7FF] hover:brightness-110 transition-all active:scale-95"
         >
           <Plus className="w-4 h-4" />
           <span>Novo Lead</span>
         </button>
 
-        {/* User Avatar */}
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 border border-indigo-400/30 flex items-center justify-center text-xs font-bold text-white shadow-sm cursor-pointer ml-1">
-          TR
-        </div>
       </div>
     </header>
   );

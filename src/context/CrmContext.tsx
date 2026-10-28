@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import confetti from 'canvas-confetti';
 import { 
   Lead, 
   Projeto, 
@@ -9,7 +8,6 @@ import {
   AlertaSLA,
   ChecklistItem 
 } from '../types/crm';
-import { INITIAL_LEADS, INITIAL_PROJETOS, INITIAL_INTERACOES } from '../data/mockData';
 
 export interface ToastNotification {
   id: string;
@@ -75,41 +73,44 @@ interface CrmContextType {
   showToast: (title: string, message: string, type?: ToastNotification['type']) => void;
   dismissToast: () => void;
   
-  // Reset demo
-  resetDataToDefaults: () => void;
 }
 
 const CrmContext = createContext<CrmContextType | undefined>(undefined);
 
-const STORAGE_LEADS_KEY = 'vortex_crm_leads_v1';
-const STORAGE_PROJETOS_KEY = 'vortex_crm_projetos_v1';
-const STORAGE_INTERACOES_KEY = 'vortex_crm_interacoes_v1';
+const STORAGE_LEADS_KEY = 'synccrm_leads_v2';
+const STORAGE_PROJETOS_KEY = 'synccrm_projetos_v2';
+const STORAGE_INTERACOES_KEY = 'synccrm_interacoes_v2';
+const LEGACY_STORAGE_KEYS = [
+  'vortex_crm_leads_v1',
+  'vortex_crm_projetos_v1',
+  'vortex_crm_interacoes_v1'
+];
 
 export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [leads, setLeads] = useState<Lead[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_LEADS_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_LEADS;
+      return saved ? JSON.parse(saved) : [];
     } catch {
-      return INITIAL_LEADS;
+      return [];
     }
   });
 
   const [projetos, setProjetos] = useState<Projeto[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_PROJETOS_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_PROJETOS;
+      return saved ? JSON.parse(saved) : [];
     } catch {
-      return INITIAL_PROJETOS;
+      return [];
     }
   });
 
   const [interacoes, setInteracoes] = useState<Interacao[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_INTERACOES_KEY);
-      return saved ? JSON.parse(saved) : INITIAL_INTERACOES;
+      return saved ? JSON.parse(saved) : [];
     } catch {
-      return INITIAL_INTERACOES;
+      return [];
     }
   });
 
@@ -129,6 +130,10 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   
   // Toast state
   const [toast, setToast] = useState<ToastNotification | null>(null);
+
+  useEffect(() => {
+    LEGACY_STORAGE_KEYS.forEach(key => localStorage.removeItem(key));
+  }, []);
 
   // Persistência
   useEffect(() => {
@@ -320,15 +325,6 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setLossModalLead(null);
   };
 
-  const triggerCelebration = () => {
-    confetti({
-      particleCount: 110,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ec4899']
-    });
-  };
-
   const confirmWonAndCreateProject = (
     leadId: string, 
     nomeProjeto: string, 
@@ -373,9 +369,8 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       autor: 'Diretoria Comercial'
     });
 
-    triggerCelebration();
     showToast(
-      '🎉 Parabéns pelo Negócio Fechado!',
+      'Negócio fechado',
       `O projeto "${novoProjeto.nome_projeto}" foi adicionado automaticamente ao Onboarding.`,
       'success'
     );
@@ -487,16 +482,6 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast('Projeto Atualizado', 'Os dados do projeto foram atualizados.', 'info');
   };
 
-  const resetDataToDefaults = () => {
-    setLeads(INITIAL_LEADS);
-    setProjetos(INITIAL_PROJETOS);
-    setInteracoes(INITIAL_INTERACOES);
-    localStorage.removeItem(STORAGE_LEADS_KEY);
-    localStorage.removeItem(STORAGE_PROJETOS_KEY);
-    localStorage.removeItem(STORAGE_INTERACOES_KEY);
-    showToast('Dados Restaurados', 'O CRM foi redefinido com os dados de demonstração originais.', 'info');
-  };
-
   return (
     <CrmContext.Provider
       value={{
@@ -540,7 +525,6 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         toast,
         showToast,
         dismissToast,
-        resetDataToDefaults
       }}
     >
       {children}

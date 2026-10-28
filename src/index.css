@@ -4,9 +4,12 @@
 
 @layer base {
   :root {
-    --bg-primary: #090d16;
-    --bg-secondary: #0f172a;
-    --border-subtle: #1e293b;
+    --brand-gradient-start: #4221ff;
+    --brand-gradient-end: #87a7ff;
+    --brand-navy: #002755;
+    --bg-primary: #071321;
+    --bg-secondary: #0b1b2d;
+    --border-subtle: #18314b;
   }
 }
 
@@ -29,16 +32,16 @@
   background: rgba(148, 163, 184, 0.4);
 }
 
-/* Glassmorphism and subtle glow accents */
+/* Use restrained elevation instead of glow effects. */
 .glow-subtle {
-  box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.8);
 }
 
 .glow-card:hover {
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.6), 0 0 15px -3px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.8);
 }
 
-/* High density typography */
 body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  background: var(--bg-primary);
 }

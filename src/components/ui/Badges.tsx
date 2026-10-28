@@ -14,29 +14,29 @@ export const ServiceBadge: React.FC<{ categoria: CategoriaServico; compact?: boo
   switch (categoria) {
     case 'Engenharia/Integração de Dados (ETL, Supabase, n8n)':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-cyan-950/50 text-cyan-300 border border-cyan-800/60">
-          <Database className="w-3 h-3 text-cyan-400" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#002755]/60 text-[#A3BCFF] border border-[#294867]">
+          <Database className="w-3 h-3 text-[#87A7FF]" />
           {compact ? 'ETL / Dados' : 'Engenharia & ETL'}
         </span>
       );
     case 'Automação de Processos/IA':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-purple-950/50 text-purple-300 border border-purple-800/60">
-          <Bot className="w-3 h-3 text-purple-400" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#002755]/60 text-[#A3BCFF] border border-[#294867]">
+          <Bot className="w-3 h-3 text-[#87A7FF]" />
           {compact ? 'IA / Agentes' : 'Automação & IA'}
         </span>
       );
     case 'Business Intelligence/Dashboards':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-950/50 text-amber-300 border border-amber-800/60">
-          <BarChart3 className="w-3 h-3 text-amber-400" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#002755]/60 text-[#A3BCFF] border border-[#294867]">
+          <BarChart3 className="w-3 h-3 text-[#87A7FF]" />
           {compact ? 'BI / Analytics' : 'BI & Dashboards'}
         </span>
       );
     case 'Consultoria/Suporte em TI':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-950/50 text-emerald-300 border border-emerald-800/60">
-          <Terminal className="w-3 h-3 text-emerald-400" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-[#002755]/60 text-[#A3BCFF] border border-[#294867]">
+          <Terminal className="w-3 h-3 text-[#87A7FF]" />
           {compact ? 'Cloud / TI' : 'Consultoria TI'}
         </span>
       );

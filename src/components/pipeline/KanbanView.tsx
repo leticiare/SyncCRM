@@ -24,37 +24,37 @@ const COLUNAS_KANBAN: { id: StatusEtapa; title: string; color: string; border: s
   {
     id: 'Reunião de Diagnóstico',
     title: 'Reunião Diagnóstico',
-    color: 'text-blue-400',
-    border: 'border-blue-900/40',
-    icon: <Stethoscope className="w-3.5 h-3.5 text-blue-400" />
+    color: 'text-[#87A7FF]',
+    border: 'border-[#18314b]',
+    icon: <Stethoscope className="w-3.5 h-3.5 text-[#87A7FF]" />
   },
   {
     id: 'Proposta Enviada',
     title: 'Proposta Enviada',
-    color: 'text-amber-400',
-    border: 'border-amber-900/40',
-    icon: <FileText className="w-3.5 h-3.5 text-amber-400" />
+    color: 'text-[#A3BCFF]',
+    border: 'border-[#18314b]',
+    icon: <FileText className="w-3.5 h-3.5 text-[#A3BCFF]" />
   },
   {
     id: 'Negociação / Contrato',
     title: 'Negociação / Contrato',
-    color: 'text-indigo-400',
-    border: 'border-indigo-900/40',
-    icon: <HelpCircle className="w-3.5 h-3.5 text-indigo-400" />
+    color: 'text-[#87A7FF]',
+    border: 'border-[#18314b]',
+    icon: <HelpCircle className="w-3.5 h-3.5 text-[#87A7FF]" />
   },
   {
     id: 'Fechado (Ganho)',
     title: 'Fechado (Ganho)',
-    color: 'text-emerald-400',
-    border: 'border-emerald-900/40',
-    icon: <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+    color: 'text-[#A3BCFF]',
+    border: 'border-[#18314b]',
+    icon: <CheckCircle className="w-3.5 h-3.5 text-[#A3BCFF]" />
   },
   {
     id: 'Perdido',
     title: 'Perdido',
-    color: 'text-rose-400',
-    border: 'border-rose-900/40',
-    icon: <XCircle className="w-3.5 h-3.5 text-rose-400" />
+    color: 'text-slate-400',
+    border: 'border-[#18314b]',
+    icon: <XCircle className="w-3.5 h-3.5 text-slate-400" />
   }
 ];
 
@@ -128,12 +128,12 @@ export const KanbanView: React.FC = () => {
               onDrop={(e) => handleDrop(e, coluna.id)}
               className={`flex-1 min-w-[220px] max-w-[280px] bg-slate-950/60 rounded-xl border flex flex-col transition-all duration-150 ${
                 isOver 
-                  ? 'border-indigo-500 bg-indigo-950/20 shadow-lg shadow-indigo-500/10' 
-                  : 'border-slate-850'
+                  ? 'border-[#87A7FF] bg-[#002755]/40' 
+                  : 'border-[#18314b]'
               }`}
             >
               {/* Header da Coluna */}
-              <div className="p-3 border-b border-slate-850 bg-slate-900/60 rounded-t-xl">
+              <div className="p-3 border-b border-[#18314b] bg-[#0b1b2d] rounded-t-xl">
                 <div className="flex items-center justify-between gap-1.5">
                   <div className="flex items-center gap-1.5 min-w-0">
                     {coluna.icon}

@@ -67,7 +67,7 @@ export const PipelineToolbar: React.FC = () => {
             onClick={() => setPipelineView('kanban')}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
               pipelineView === 'kanban'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-gradient-to-r from-[#4221FF] to-[#87A7FF] text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
@@ -78,7 +78,7 @@ export const PipelineToolbar: React.FC = () => {
             onClick={() => setPipelineView('tabela')}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
               pipelineView === 'tabela'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-gradient-to-r from-[#4221FF] to-[#87A7FF] text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
             }`}
           >
@@ -93,7 +93,7 @@ export const PipelineToolbar: React.FC = () => {
           <select
             value={filterServico}
             onChange={(e) => setFilterServico(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="px-2.5 py-1.5 bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#87A7FF]"
           >
             <option value="">Todas as Especialidades</option>
             {SERVICOS.map(s => (
@@ -105,7 +105,7 @@ export const PipelineToolbar: React.FC = () => {
           <select
             value={filterSegmento}
             onChange={(e) => setFilterSegmento(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="px-2.5 py-1.5 bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#87A7FF]"
           >
             <option value="">Todos os Segmentos</option>
             {SEGMENTOS.map(seg => (
@@ -117,7 +117,7 @@ export const PipelineToolbar: React.FC = () => {
           <select
             value={filterOrigem}
             onChange={(e) => setFilterOrigem(e.target.value)}
-            className="hidden sm:block px-2.5 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="hidden sm:block px-2.5 py-1.5 bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] rounded-lg text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-[#87A7FF]"
           >
             <option value="">Todas as Origens</option>
             {ORIGENS.map(o => (
@@ -142,7 +142,7 @@ export const PipelineToolbar: React.FC = () => {
       <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 font-mono">
         <span>Oportunidades: <strong className="text-slate-200">{leads.length}</strong></span>
         <span>•</span>
-        <span>Total: <strong className="text-emerald-400">{formatCurrencyBRL(leads.reduce((acc, l) => acc + l.valor_estimado, 0))}</strong></span>
+        <span>Total: <strong className="text-[#A3BCFF]">{formatCurrencyBRL(leads.reduce((acc, l) => acc + l.valor_estimado, 0))}</strong></span>
       </div>
     </div>
   );

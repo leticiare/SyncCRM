@@ -39,12 +39,12 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead }) => {
       draggable
       onDragStart={handleDragStart}
       onClick={() => setSelectedLead(lead)}
-      className="group relative bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700/90 rounded-xl p-3.5 shadow-sm hover:shadow-lg transition-all duration-150 cursor-grab active:cursor-grabbing select-none"
+      className="group relative bg-[#0b1b2d] hover:bg-[#10243a] border border-[#18314b] hover:border-[#294867] rounded-lg p-3.5 shadow-sm transition-all duration-150 cursor-grab active:cursor-grabbing select-none"
     >
       {/* Top row: Company Name & Priority / Warning */}
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="min-w-0 flex-1">
-          <h4 className="text-xs font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors truncate">
+          <h4 className="text-xs font-semibold text-white group-hover:text-[#87A7FF] transition-colors truncate">
             {lead.nome_empresa}
           </h4>
           <p className="text-[11px] text-slate-400 truncate flex items-center gap-1.5 mt-0.5">
@@ -87,7 +87,7 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({ lead }) => {
 
       {/* Bottom Row: Value & Origin */}
       <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-        <span className="font-mono font-bold text-slate-200 group-hover:text-emerald-400 transition-colors">
+        <span className="font-mono font-bold text-slate-200 group-hover:text-[#87A7FF] transition-colors">
           {formatCurrencyBRL(lead.valor_estimado)}
         </span>
         

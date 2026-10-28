@@ -18,7 +18,7 @@ const MainContent: React.FC = () => {
   const { activeTab, pipelineView } = useCrm();
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 font-sans overflow-hidden">
+    <div className="flex h-screen bg-[#071321] text-slate-100 font-sans overflow-hidden">
       {/* Sidebar */}
       <Sidebar />
 
