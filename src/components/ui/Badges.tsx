@@ -10,7 +10,16 @@ import {
   Rocket 
 } from 'lucide-react';
 
-export const ServiceBadge: React.FC<{ categoria: CategoriaServico; compact?: boolean }> = ({ categoria, compact }) => {
+export const ServiceBadge: React.FC<{ categoria: CategoriaServico | CategoriaServico[]; compact?: boolean }> = ({ categoria, compact }) => {
+  const categorias = Array.isArray(categoria) ? categoria : [categoria];
+  return (
+    <span className="inline-flex flex-wrap items-center gap-1.5">
+      {categorias.map((item) => <ServiceBadgeItem key={item} categoria={item} compact={compact} />)}
+    </span>
+  );
+};
+
+const ServiceBadgeItem: React.FC<{ categoria: CategoriaServico; compact?: boolean }> = ({ categoria, compact }) => {
   switch (categoria) {
     case 'Engenharia/Integração de Dados (ETL, Supabase, n8n)':
       return (

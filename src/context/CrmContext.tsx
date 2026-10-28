@@ -86,11 +86,24 @@ const LEGACY_STORAGE_KEYS = [
   'vortex_crm_interacoes_v1'
 ];
 
+const normalizeLead = (lead: Lead): Lead => {
+  const rawCategoria = (lead as Lead & { categoria_servico?: string | string[] }).categoria_servico;
+  return {
+    ...lead,
+    categoria_servico: Array.isArray(rawCategoria)
+      ? rawCategoria.filter(Boolean)
+      : rawCategoria
+        ? [rawCategoria]
+        : []
+  };
+};
+
 export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [leads, setLeads] = useState<Lead[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_LEADS_KEY);
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed.map(normalizeLead) : [];
     } catch {
       return [];
     }
@@ -99,7 +112,8 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [projetos, setProjetos] = useState<Projeto[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_PROJETOS_KEY);
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -344,13 +358,13 @@ export const CrmProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const novoProjeto: Projeto = {
       id: `proj-${Date.now()}`,
       lead_id: lead.id,
-      nome_projeto: nomeProjeto || `Implantação ${lead.categoria_servico.split(' ')[0]} - ${lead.nome_empresa}`,
+      nome_projeto: nomeProjeto || `Implantação ${lead.categoria_servico[0]?.split(' ')[0] || 'Consultoria'} - ${lead.nome_empresa}`,
       cliente: lead.nome_empresa,
       responsavel_tecnico: responsavelTecnico || 'A Definir',
       valor: lead.valor_estimado,
       data_inicio: dataInicio || new Date().toISOString().split('T')[0],
       status: 'Kick-off',
-      descricao_escopo: `Projeto originado da proposta fechada de ${lead.categoria_servico}. Contato: ${lead.nome_contato}.`,
+      descricao_escopo: `Projeto originado da proposta fechada de ${lead.categoria_servico.join(', ')}. Contato: ${lead.nome_contato}.`,
       checklist_inicial: checklistTextos.map((texto, index) => ({
         id: `chk-${Date.now()}-${index}`,
         texto,

@@ -1,24 +1,6 @@
-export type OrigemLead = 
-  | 'Busca Ativa' 
-  | 'Indicação B2B' 
-  | 'LinkedIn' 
-  | 'Abordagem Direta' 
-  | 'Site';
-
-export type SegmentoAtuacao = 
-  | 'Varejo' 
-  | 'FinTech' 
-  | 'Indústria' 
-  | 'Saúde' 
-  | 'Logística' 
-  | 'Agronegócio' 
-  | 'Serviços Financeiros';
-
-export type CategoriaServico = 
-  | 'Engenharia/Integração de Dados (ETL, Supabase, n8n)'
-  | 'Automação de Processos/IA'
-  | 'Business Intelligence/Dashboards'
-  | 'Consultoria/Suporte em TI';
+export type OrigemLead = string;
+export type SegmentoAtuacao = string;
+export type CategoriaServico = string;
 
 export type StatusEtapa = 
   | 'Lead Qualificado'
@@ -45,7 +27,7 @@ export interface Lead {
   telefone_whatsapp: string;
   origem: OrigemLead;
   segmento_atuacao: SegmentoAtuacao;
-  categoria_servico: CategoriaServico;
+  categoria_servico: CategoriaServico[];
   status_etapa: StatusEtapa;
   valor_estimado: number;
   data_criacao: string; // ISO

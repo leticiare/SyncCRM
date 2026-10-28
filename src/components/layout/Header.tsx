@@ -26,7 +26,18 @@ export const Header: React.FC = () => {
   } = useCrm();
 
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [readNotificationIds, setReadNotificationIds] = useState<Set<string>>(new Set());
   const notificationRef = useRef<HTMLDivElement>(null);
+
+  const unreadAlerts = alertasSLA.filter(alerta => !readNotificationIds.has(alerta.id));
+
+  useEffect(() => {
+    const activeIds = new Set(alertasSLA.map(alerta => alerta.id));
+    setReadNotificationIds(prev => {
+      const next = new Set([...prev].filter(id => activeIds.has(id)));
+      return next.size === prev.size ? prev : next;
+    });
+  }, [alertasSLA]);
 
   // Fecha dropdown de notificação ao clicar fora
   useEffect(() => {
@@ -40,6 +51,12 @@ export const Header: React.FC = () => {
   }, []);
 
   const handleAlertClick = (alerta: typeof alertasSLA[0]) => {
+    setReadNotificationIds(prev => {
+      const next = new Set(prev);
+      next.add(alerta.id);
+      return next;
+    });
+
     if (alerta.lead_id) {
       const targetLead = leads.find(l => l.id === alerta.lead_id);
       if (targetLead) {
@@ -79,15 +96,15 @@ export const Header: React.FC = () => {
           <button
             onClick={() => setNotificationsOpen(!notificationsOpen)}
             className={`p-2 rounded-lg border transition-all relative ${
-              alertasSLA.length > 0 
+              unreadAlerts.length > 0 
                 ? 'bg-slate-900 border-amber-500/30 text-amber-300 hover:bg-slate-850' 
                 : 'bg-slate-900 border-slate-850 text-slate-400 hover:text-slate-200'
             }`}
           >
             <Bell className="w-4 h-4" />
-            {alertasSLA.length > 0 && (
+            {unreadAlerts.length > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white font-bold text-[9px] rounded-full flex items-center justify-center animate-pulse">
-                {alertasSLA.length}
+                {unreadAlerts.length}
               </span>
             )}
           </button>
@@ -101,7 +118,7 @@ export const Header: React.FC = () => {
                   <span className="text-xs font-bold text-slate-100">Central de Alertas & SLAs</span>
                 </div>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
-                  {alertasSLA.length} pendências
+                  {unreadAlerts.length} não lidas
                 </span>
               </div>
 

@@ -59,7 +59,7 @@ export const LossModal: React.FC = () => {
           <div className="p-3.5 rounded-lg bg-slate-950 border border-slate-800 flex justify-between items-center text-sm">
             <div>
               <div className="font-semibold text-slate-200">{lead.nome_empresa}</div>
-              <div className="text-xs text-slate-400">{lead.nome_contato} • {lead.categoria_servico}</div>
+              <div className="text-xs text-slate-400">{lead.nome_contato} • {lead.categoria_servico.join(', ')}</div>
             </div>
             <div className="text-right">
               <div className="text-xs text-slate-400">Valor em risco</div>

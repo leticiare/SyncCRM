@@ -43,8 +43,11 @@ export const NewLeadModal: React.FC = () => {
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [origem, setOrigem] = useState<OrigemLead>('LinkedIn');
+  const [outraOrigem, setOutraOrigem] = useState('');
   const [segmento, setSegmento] = useState<SegmentoAtuacao>('FinTech');
-  const [categoria, setCategoria] = useState<CategoriaServico>('Engenharia/Integração de Dados (ETL, Supabase, n8n)');
+  const [outroSegmento, setOutroSegmento] = useState('');
+  const [categorias, setCategorias] = useState<CategoriaServico[]>(['Engenharia/Integração de Dados (ETL, Supabase, n8n)']);
+  const [novaCategoria, setNovaCategoria] = useState('');
   const [valor, setValor] = useState('85000');
   const [prioridade, setPrioridade] = useState<'Alta' | 'Média' | 'Baixa' | 'Crítica'>('Alta');
   const [statusEtapa, setStatusEtapa] = useState<StatusEtapa>('Lead Qualificado');
@@ -58,6 +61,9 @@ export const NewLeadModal: React.FC = () => {
     if (!nomeContato.trim()) errs.nomeContato = 'Nome do contato é obrigatório';
     if (!email.trim() || !email.includes('@')) errs.email = 'E-mail corporativo válido é obrigatório';
     if (!telefone.trim()) errs.telefone = 'WhatsApp é obrigatório';
+    if (categorias.length === 0) errs.categorias = 'Selecione ao menos um serviço';
+    if (segmento === '__custom__' && !outroSegmento.trim()) errs.segmento = 'Informe o segmento';
+    if (origem === '__custom__' && !outraOrigem.trim()) errs.origem = 'Informe a origem';
     const numValor = parseFloat(valor.replace(/\D/g, ''));
     if (isNaN(numValor) || numValor <= 0) errs.valor = 'Informe um valor estimado válido';
     setErrors(errs);
@@ -78,9 +84,9 @@ export const NewLeadModal: React.FC = () => {
       cnpj: cleanCnpj,
       email: email.trim(),
       telefone_whatsapp: telefone.trim(),
-      origem,
-      segmento_atuacao: segmento,
-      categoria_servico: categoria,
+      origem: origem === '__custom__' ? outraOrigem.trim() : origem,
+      segmento_atuacao: segmento === '__custom__' ? outroSegmento.trim() : segmento,
+      categoria_servico: categorias,
       status_etapa: statusEtapa,
       valor_estimado: numValor,
       diagnostico_realizado: false,
@@ -122,7 +128,7 @@ export const NewLeadModal: React.FC = () => {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1">
           {/* Seção 1: Empresa & Segmento */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
                 <Building2 className="w-3.5 h-3.5 text-slate-400" />
@@ -151,7 +157,7 @@ export const NewLeadModal: React.FC = () => {
           </div>
 
           {/* Seção 2: Contato & Cargo */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-slate-400" />
@@ -180,7 +186,7 @@ export const NewLeadModal: React.FC = () => {
           </div>
 
           {/* Seção 3: E-mail e WhatsApp */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
                 <Mail className="w-3.5 h-3.5 text-slate-400" />
@@ -217,19 +223,44 @@ export const NewLeadModal: React.FC = () => {
             <label className="text-xs font-medium text-slate-300">
               Categoria de Serviço em Consultoria <span className="text-rose-400">*</span>
             </label>
-            <select
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value as CategoriaServico)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {CATEGORIAS_SERVICO.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+                <label key={cat} className="flex items-start gap-2 p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 cursor-pointer hover:border-[#294867]">
+                  <input
+                    type="checkbox"
+                    checked={categorias.includes(cat)}
+                    onChange={() => setCategorias(prev => prev.includes(cat) ? prev.filter(item => item !== cat) : [...prev, cat])}
+                    className="mt-0.5 accent-[#4221FF]"
+                  />
+                  <span>{cat}</span>
+                </label>
               ))}
-            </select>
+            </div>
+            <div className="flex gap-2 pt-1">
+              <input
+                type="text"
+                value={novaCategoria}
+                onChange={(e) => setNovaCategoria(e.target.value)}
+                placeholder="Adicionar outro serviço"
+                className="flex-1 px-2.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-[#87A7FF]"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const value = novaCategoria.trim();
+                  if (value && !categorias.includes(value)) setCategorias(prev => [...prev, value]);
+                  setNovaCategoria('');
+                }}
+                className="px-3 py-2 rounded-lg bg-[#10243a] border border-[#294867] text-[#A3BCFF] text-xs"
+              >
+                Adicionar
+              </button>
+            </div>
+            {errors.categorias && <p className="text-[11px] text-rose-400">{errors.categorias}</p>}
           </div>
 
           {/* Seção 5: Segmento, Origem e Prioridade */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300">Segmento</label>
               <select
@@ -240,7 +271,10 @@ export const NewLeadModal: React.FC = () => {
                 {SEGMENTOS.map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
+                <option value="__custom__">Outro segmento...</option>
               </select>
+              {segmento === '__custom__' && <input value={outroSegmento} onChange={(e) => setOutroSegmento(e.target.value)} placeholder="Informe o segmento" className="w-full px-2.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100" />}
+              {errors.segmento && <p className="text-[11px] text-rose-400">{errors.segmento}</p>}
             </div>
 
             <div className="space-y-1">
@@ -253,10 +287,13 @@ export const NewLeadModal: React.FC = () => {
                 {ORIGENS.map(o => (
                   <option key={o} value={o}>{o}</option>
                 ))}
+                <option value="__custom__">Outra origem...</option>
               </select>
+              {origem === '__custom__' && <input value={outraOrigem} onChange={(e) => setOutraOrigem(e.target.value)} placeholder="Informe a origem" className="w-full px-2.5 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100" />}
+              {errors.origem && <p className="text-[11px] text-rose-400">{errors.origem}</p>}
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 flex flex-col">
               <label className="text-xs font-medium text-slate-300">Prioridade</label>
               <select
                 value={prioridade}
@@ -288,12 +325,12 @@ export const NewLeadModal: React.FC = () => {
               {errors.valor && <p className="text-[11px] text-rose-400">{errors.valor}</p>}
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 flex flex-col">
               <label className="text-xs font-medium text-slate-300">Etapa de Entrada</label>
               <select
                 value={statusEtapa}
                 onChange={(e) => setStatusEtapa(e.target.value as StatusEtapa)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full h-[34px] px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
               >
                 <option value="Lead Qualificado">1. Lead Qualificado</option>
                 <option value="Reunião de Diagnóstico">2. Reunião de Diagnóstico</option>

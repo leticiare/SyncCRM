@@ -70,7 +70,7 @@ export const LeadDrawer: React.FC = () => {
   // Link do WhatsApp com mensagem pronta personalizada de consultoria
   const whatsappPhone = cleanPhoneForWhatsApp(selectedLead.telefone_whatsapp);
   const whatsappText = encodeURIComponent(
-    `Olá ${selectedLead.nome_contato}, tudo bem? Sou da consultoria de tecnologia e dados. Gostaria de dar seguimento ao nosso diagnóstico técnico para a ${selectedLead.nome_empresa} sobre ${selectedLead.categoria_servico.split('(')[0].trim()}.`
+    `Olá ${selectedLead.nome_contato}, tudo bem? Sou da consultoria de tecnologia e dados. Gostaria de dar seguimento ao nosso diagnóstico técnico para a ${selectedLead.nome_empresa} sobre ${selectedLead.categoria_servico.join(', ')}.`
   );
   const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${whatsappText}`;
 

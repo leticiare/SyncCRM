@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCrm } from '../../context/CrmContext';
-import { Trophy, Rocket, X, Plus, Trash2, CheckSquare } from 'lucide-react';
+import { Rocket, X, Plus, Trash2, CheckSquare } from 'lucide-react';
 import { formatCurrencyBRL } from '../../utils/formatters';
 
 const DEFAULT_CHECKLIST = [
@@ -35,7 +35,10 @@ export const WonModal: React.FC = () => {
   if (!wonModalLead) return null;
   const { lead } = wonModalLead;
 
-  const defaultNome = `Implantação ${lead.categoria_servico.split('/')[0]} - ${lead.nome_empresa}`;
+  const categorias = Array.isArray(lead.categoria_servico)
+    ? lead.categoria_servico
+    : [lead.categoria_servico];
+  const defaultNome = `Implantação ${categorias[0]?.split('/')[0] || 'Consultoria'} - ${lead.nome_empresa}`;
   const currentNome = nomeProjeto || defaultNome;
 
   const handleAddChecklistItem = () => {
@@ -61,17 +64,16 @@ export const WonModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden max-h-[90vh] flex flex-col">
-        {/* Header with celebration theme */}
-        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/30">
+      <div className="bg-[#071321] border border-[#18314b] rounded-xl shadow-2xl max-w-xl w-full overflow-hidden max-h-[90vh] flex flex-col">
+        <div className="px-6 py-4 border-b border-[#18314b] flex items-center justify-between bg-[#0b1b2d]">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-              <Trophy className="w-6 h-6 animate-bounce" />
+            <div className="p-2.5 rounded-lg bg-gradient-to-br from-[#4221FF] to-[#87A7FF] text-white">
+              <Rocket className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
                 Handover Pós-Venda: Criar Projeto
-                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#002755] text-[#A3BCFF] border border-[#294867]">
                   Fechado (Ganho)
                 </span>
               </h3>
@@ -80,7 +82,7 @@ export const WonModal: React.FC = () => {
           </div>
           <button
             onClick={() => setWonModalLead(null)}
-            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800"
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#18314b]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -89,7 +91,7 @@ export const WonModal: React.FC = () => {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1">
           {/* Deal Summary Box */}
-          <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 grid grid-cols-2 gap-4 text-xs">
+          <div className="p-3.5 rounded-lg bg-[#0b1b2d] border border-[#18314b] grid grid-cols-2 gap-4 text-xs">
             <div>
               <span className="text-slate-400 block">Cliente</span>
               <span className="font-semibold text-slate-200 text-sm">{lead.nome_empresa}</span>
@@ -97,8 +99,8 @@ export const WonModal: React.FC = () => {
             </div>
             <div className="text-right">
               <span className="text-slate-400 block">Valor Fechado</span>
-              <span className="font-mono font-bold text-emerald-400 text-base">{formatCurrencyBRL(lead.valor_estimado)}</span>
-              <span className="text-slate-400 block mt-0.5 text-[11px]">{lead.categoria_servico}</span>
+              <span className="font-mono font-bold text-[#A3BCFF] text-base">{formatCurrencyBRL(lead.valor_estimado)}</span>
+              <span className="text-slate-400 block mt-0.5 text-[11px]">{categorias.join(', ')}</span>
             </div>
           </div>
 
@@ -112,7 +114,7 @@ export const WonModal: React.FC = () => {
               value={nomeProjeto}
               placeholder={defaultNome}
               onChange={(e) => setNomeProjeto(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-[#071321] border border-[#18314b] rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#87A7FF] focus:border-[#87A7FF]"
             />
           </div>
 
@@ -120,12 +122,12 @@ export const WonModal: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300">
-                Responsável Técnico (Tech Lead) <span className="text-emerald-400">*</span>
+              Responsável Técnico (Tech Lead) <span className="text-[#87A7FF]">*</span>
               </label>
               <select
                 value={responsavelTecnico}
                 onChange={(e) => setResponsavelTecnico(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-[#071321] border border-[#18314b] rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#87A7FF] focus:border-[#87A7FF]"
               >
                 {TECH_LEADS.map(tl => (
                   <option key={tl} value={tl}>{tl}</option>
@@ -135,13 +137,13 @@ export const WonModal: React.FC = () => {
 
             <div className="space-y-1">
               <label className="text-xs font-medium text-slate-300">
-                Data Prevista de Início <span className="text-emerald-400">*</span>
+              Data Prevista de Início <span className="text-[#87A7FF]">*</span>
               </label>
               <input
                 type="date"
                 value={dataInicio}
                 onChange={(e) => setDataInicio(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-[#071321] border border-[#18314b] rounded-lg text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-[#87A7FF] focus:border-[#87A7FF]"
               />
             </div>
           </div>
@@ -150,7 +152,7 @@ export const WonModal: React.FC = () => {
           <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
-                <CheckSquare className="w-3.5 h-3.5 text-emerald-400" />
+                <CheckSquare className="w-3.5 h-3.5 text-[#87A7FF]" />
                 Checklist de Kick-off Técnico ({checklist.length} itens)
               </label>
             </div>
@@ -159,7 +161,7 @@ export const WonModal: React.FC = () => {
               {checklist.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between gap-2 p-2 rounded-lg bg-slate-950 border border-slate-800/80 text-xs text-slate-300 group"
+                  className="flex items-center justify-between gap-2 p-2 rounded-lg bg-[#0b1b2d] border border-[#18314b] text-xs text-slate-300 group"
                 >
                   <span className="flex-1 truncate">{index + 1}. {item}</span>
                   <button
@@ -186,12 +188,12 @@ export const WonModal: React.FC = () => {
                     handleAddChecklistItem();
                   }
                 }}
-                className="flex-1 px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="flex-1 px-3 py-1.5 bg-[#071321] border border-[#18314b] rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-[#87A7FF]"
               />
               <button
                 type="button"
                 onClick={handleAddChecklistItem}
-                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg transition-colors flex items-center gap-1"
+                className="px-3 py-1.5 bg-[#10243a] hover:bg-[#18314b] text-slate-200 text-xs rounded-lg transition-colors flex items-center gap-1"
               >
                 <Plus className="w-3.5 h-3.5" /> Adicionar
               </button>
@@ -209,7 +211,7 @@ export const WonModal: React.FC = () => {
             </button>
             <button
               type="submit"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-500 rounded-lg transition-all shadow-lg shadow-emerald-600/25"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-gradient-to-r from-[#4221FF] to-[#87A7FF] hover:brightness-110 rounded-lg transition-all"
             >
               <Rocket className="w-4 h-4" />
               Celebrar e Criar Onboarding

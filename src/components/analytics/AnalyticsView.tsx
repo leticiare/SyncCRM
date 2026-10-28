@@ -40,7 +40,7 @@ export const AnalyticsView: React.FC = () => {
   ] as const;
 
   const serviceBreakdown = serviceCategories.map(cat => {
-    const catLeads = leads.filter(l => l.categoria_servico === cat);
+    const catLeads = leads.filter(l => l.categoria_servico.includes(cat));
     const catValue = catLeads.reduce((acc, l) => acc + l.valor_estimado, 0);
     return {
       categoria: cat,

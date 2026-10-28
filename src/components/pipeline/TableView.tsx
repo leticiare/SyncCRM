@@ -52,11 +52,11 @@ export const TableView: React.FC = () => {
         lead.nome_empresa.toLowerCase().includes(q) ||
         lead.nome_contato.toLowerCase().includes(q) ||
         lead.cnpj.includes(q) ||
-        lead.categoria_servico.toLowerCase().includes(q)
+        lead.categoria_servico.join(', ').toLowerCase().includes(q)
       );
       if (!match) return false;
     }
-    if (filterServico && lead.categoria_servico !== filterServico) return false;
+    if (filterServico && !lead.categoria_servico.includes(filterServico)) return false;
     if (filterSegmento && lead.segmento_atuacao !== filterSegmento) return false;
     if (filterOrigem && lead.origem !== filterOrigem) return false;
     return true;
