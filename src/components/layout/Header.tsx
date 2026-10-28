@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { formatCurrencyBRL } from '../../utils/formatters';
 
+const READ_NOTIFICATIONS_STORAGE_KEY = 'synccrm_read_notifications_v1';
+
 export const Header: React.FC = () => {
   const { 
     searchTerm, 
@@ -26,7 +28,16 @@ export const Header: React.FC = () => {
   } = useCrm();
 
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [readNotificationIds, setReadNotificationIds] = useState<Set<string>>(new Set());
+  const [readNotificationIds, setReadNotificationIds] = useState<Set<string>>(() => {
+    try {
+      const saved = localStorage.getItem(READ_NOTIFICATIONS_STORAGE_KEY);
+      const parsed = saved ? JSON.parse(saved) : [];
+      return new Set(Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === 'string') : []);
+    } catch (error) {
+      console.error('Falha ao carregar notificações lidas:', error);
+      return new Set();
+    }
+  });
   const notificationRef = useRef<HTMLDivElement>(null);
 
   const unreadAlerts = alertasSLA.filter(alerta => !readNotificationIds.has(alerta.id));
@@ -38,6 +49,17 @@ export const Header: React.FC = () => {
       return next.size === prev.size ? prev : next;
     });
   }, [alertasSLA]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        READ_NOTIFICATIONS_STORAGE_KEY,
+        JSON.stringify([...readNotificationIds])
+      );
+    } catch (error) {
+      console.error('Falha ao salvar notificações lidas:', error);
+    }
+  }, [readNotificationIds]);
 
   // Fecha dropdown de notificação ao clicar fora
   useEffect(() => {
