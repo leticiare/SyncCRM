@@ -75,15 +75,21 @@ export const KanbanView: React.FC = () => {
   const filteredLeads = leads.filter(lead => {
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
-      const matchText = (
-        lead.nome_empresa.toLowerCase().includes(q) ||
-        lead.nome_contato.toLowerCase().includes(q) ||
-        lead.cnpj.includes(q) ||
-        lead.categoria_servico.join(', ').toLowerCase().includes(q)
-      );
+      const services = Array.isArray(lead.categoria_servico) ? lead.categoria_servico : [lead.categoria_servico];
+      const matchText = [
+        lead.nome_empresa,
+        lead.nome_contato,
+        lead.cnpj,
+        lead.email,
+        lead.telefone_whatsapp,
+        lead.segmento_atuacao,
+        lead.origem,
+        ...services
+      ].some(value => value.toLowerCase().includes(q));
       if (!matchText) return false;
     }
-    if (filterServico && !lead.categoria_servico.includes(filterServico)) return false;
+    const services = Array.isArray(lead.categoria_servico) ? lead.categoria_servico : [lead.categoria_servico];
+    if (filterServico && !services.includes(filterServico)) return false;
     if (filterSegmento && lead.segmento_atuacao !== filterSegmento) return false;
     if (filterOrigem && lead.origem !== filterOrigem) return false;
     return true;

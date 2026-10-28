@@ -91,23 +91,77 @@ export const Header: React.FC = () => {
     setNotificationsOpen(false);
   };
 
+  const searchQuery = searchTerm.trim().toLowerCase();
+  const searchResults = searchQuery
+    ? leads.filter(lead => {
+        const services = Array.isArray(lead.categoria_servico)
+          ? lead.categoria_servico
+          : [lead.categoria_servico];
+        return [
+          lead.nome_empresa,
+          lead.nome_contato,
+          lead.cnpj,
+          lead.email,
+          lead.telefone_whatsapp,
+          lead.segmento_atuacao,
+          lead.origem,
+          ...services
+        ].some(value => value.toLowerCase().includes(searchQuery));
+      }).slice(0, 8)
+    : [];
+
+  const handleSearchResultClick = (lead: typeof leads[number]) => {
+    setSelectedLead(lead);
+    setActiveTab('pipeline');
+    setSearchTerm('');
+  };
+
   return (
     <header className="h-14 border-b border-[#18314b] bg-[#071321] px-4 sm:px-6 flex items-center justify-between gap-4 sticky top-0 z-30">
       {/* Global Search Bar */}
       <div className="flex-1 max-w-md">
         <div className="relative group">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
+          <button
+            type="button"
+            aria-label="Pesquisar leads"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#87A7FF] transition-colors"
+          >
+            <Search className="w-4 h-4" />
+          </button>
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Buscar empresa, contato, CNPJ ou stack técnica..."
-            className="w-full bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] focus:border-[#87A7FF] rounded-lg pl-9 pr-14 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
+            placeholder="Buscar empresa, contato, CNPJ ou serviço..."
+            className="w-full bg-[#0b1b2d] border border-[#18314b] hover:border-[#294867] focus:border-[#87A7FF] rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition-colors"
           />
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-0.5 text-[10px] text-slate-500 font-mono bg-slate-800/80 px-1.5 py-0.5 rounded border border-slate-700/60">
-            <span>⌘</span>
-            <span>K</span>
-          </div>
+          {searchQuery && (
+            <div className="absolute left-0 right-0 top-full mt-2 bg-[#0b1b2d] border border-[#294867] rounded-lg shadow-xl overflow-hidden z-50">
+              {searchResults.length > 0 ? (
+                <div className="p-1">
+                  {searchResults.map(lead => (
+                    <button
+                      key={lead.id}
+                      type="button"
+                      onClick={() => handleSearchResultClick(lead)}
+                      className="w-full text-left px-3 py-2 rounded-md hover:bg-[#18314b] transition-colors"
+                    >
+                      <span className="block text-xs font-semibold text-slate-100 truncate">
+                        {lead.nome_empresa}
+                      </span>
+                      <span className="block text-[11px] text-slate-400 truncate">
+                        {lead.nome_contato} · {lead.status_etapa}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="px-3 py-3 text-xs text-slate-400">
+                  Nenhum lead encontrado.
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
